@@ -22,11 +22,33 @@ class ImageAPI {
         return null;
     }
 
-    public function completed_url($url) {
+    public function completed_url($url, $image_directory) {
 
+
+        // Check if the full image was created.
+        $full_image_path =  $image_directory."\\".md5($url).".jpg";
+        $thumb1_image_path =  $image_directory."\\thumb_50_50_".md5($url).".jpg";
+        $thumb2_image_path =  $image_directory."\\thumb_200_200_".md5($url).".jpg";
+
+        $full_image_file = fopen($full_image_path, "r");
+        $full_image_data = fread($full_image_file, filesize($full_image_path));
+        fclose($full_image_file);
+
+        $thumb1_image_file = fopen($thumb1_image_path, "r");
+        $thumb1_image_data = fread($thumb1_image_file, filesize($thumb1_image_path));
+        fclose($thumb1_image_file);
+
+        $thumb2_image_file = fopen($thumb2_image_path, "r");
+        $thumb2_image_data = fread($thumb2_image_file, filesize($thumb2_image_path));
+        fclose($thumb2_image_file);
+
+        $post_data = array ( "url" => $url,
+                             "full_image" => base64_encode($full_image_data),
+                             "thumb_50_50_image" => base64_encode($thumb1_image_data),
+                             "thumb_200_200_image" => base64_encode($thumb2_image_data));
         $ch = curl_init($this->completed_url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "url=".urlencode($url));
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         $data = curl_exec($ch);
 
         curl_close($ch);

@@ -7,11 +7,14 @@
  class WebShot {
 
      public $output_dir = "";
-     public $thumb_width = 50;
-     public $thumb_height = 50;
+     public $thumb1_width = 50;
+     public $thumb1_height = 50;
 
-     public $crop_width = 430;
-     public $crop_height = 420;
+     public $thumb2_width = 200;
+     public $thumb2_height = 200;
+
+     public $crop_width = 800;
+     public $crop_height = 600;
 
 
      public function WebShot($output_dir){
@@ -23,7 +26,8 @@
         //Check if the thumbnail was indeed created
         if ($this->snapshot_exists($url)) {
             $this->crop_image($url, $this->crop_width, $this->crop_height);
-            $this->make_thumbnail($url, $this->thumb_width, $this->thumb_height);
+            $this->make_thumbnail($url, $this->thumb1_width, $this->thumb1_height);
+            $this->make_thumbnail($url, $this->thumb2_width, $this->thumb2_height);
         }
      }
 
@@ -40,7 +44,7 @@
      }
      private function make_thumbnail($url, $thumb_width, $thumb_height) {
         $filename = $this->snapshot_file($url);
-        $thumb_filename = $this->thumbnail_file($url);
+        $thumb_filename = $this->thumbnail_file($url, $thumb_width, $thumb_height);
         list($width, $height) = getimagesize($filename);
         $tn = imagecreatetruecolor($thumb_width, $thumb_height) ;
         $image = imagecreatefromjpeg($filename) ;
@@ -55,15 +59,15 @@
          return $this->output_dir."\\".md5($url).".jpg";
      }
 
-     private function thumbnail_file($url) {
-         return $this->output_dir."\\thumb_".md5($url).".jpg";
+     private function thumbnail_file($url, $width, $height) {
+         return $this->output_dir."\\thumb_".$width."_".$height."_".md5($url).".jpg";
      }
      private function take_snapshot($url) {
         $webshot = new COM("{B10527B6-F84A-499f-873C-ABAF0DC1D696}");
         $webshot->DllInit($this->output_dir."\\debug.log", 2);
         $handle = $webshot->Create();
-        $webshot->SetBrowserWidthMinimum($handle, 1000);
-        $webshot->SetBrowserHeightMinimum($handle, 1000);
+        $webshot->SetBrowserWidthMinimum($handle, 800);
+        $webshot->SetBrowserHeightMinimum($handle, 600);
         $webshot->SetBrowserVisible($handle, 0);
         $webshot->SetVerbose($handle, 1);
         $webshot->SetOutputPath($handle, $this->output_dir."\\%m.jpg");

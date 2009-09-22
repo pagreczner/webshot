@@ -14,9 +14,9 @@ while (1) {
     $url = $i->get_next_url();
 
     if (strlen($url) > 0) {
-        $w = new WebShot("Z:\\");
+        $w = new WebShot("C:\\isocket_images\\");
         $w->process($url);
-        $i->completed_url($url);
+        $i->completed_url($url, "C:\\isocket_images\\");
     } else {
         sleep(5);
     }
