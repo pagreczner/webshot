@@ -31,7 +31,7 @@ class Image extends Controller{
         echo "";
     }
 
-    function thumb() {
+    function thumb_50_50() {
         $domain = $this->get_domain_from_uri();
 
         $this->ImageQueue->register_url($domain);
@@ -40,7 +40,23 @@ class Image extends Controller{
 
         if (strlen($domain) > 0) {
             if (file_exists($this->image_directory."/".md5($domain).".jpg")) {
-                $image_path = $this->image_directory."/thumb_".md5($domain).".jpg";
+                $image_path = $this->image_directory."/thumb_50_50_".md5($domain).".jpg";
+            }
+        }
+
+        $this->return_image($image_path);
+    }
+
+    function thumb_200_200() {
+        $domain = $this->get_domain_from_uri();
+
+        $this->ImageQueue->register_url($domain);
+
+        $image_path = $this->image_directory."/".$this->default_thumb_image;
+
+        if (strlen($domain) > 0) {
+            if (file_exists($this->image_directory."/".md5($domain).".jpg")) {
+                $image_path = $this->image_directory."/thumb_200_200_".md5($domain).".jpg";
             }
         }
 
@@ -49,6 +65,7 @@ class Image extends Controller{
 
     function full() {
         $domain = $this->get_domain_from_uri();
+        $this->ImageQueue->register_url($domain);
         $image_path = $this->image_directory."/".$this->default_full_image;
 
         if (($domain) && (strlen($domain) > 0)) {
@@ -60,6 +77,10 @@ class Image extends Controller{
         $this->return_image($image_path);
         
     }
+
+    
+
+
     /* Private functions */
     private function get_domain_from_uri() {
 
