@@ -10,7 +10,9 @@
  * @author root
  */
 
-class Image extends Controller{
+require(APPPATH.'/libraries/Base_Controller.php');
+
+class Image extends Base_Controller{
     //put your code here
 
    public $image_directory = null;
@@ -19,7 +21,7 @@ class Image extends Controller{
 
    function Image()
 	{
-		parent::Controller();
+		parent::Base_Controller();
         $this->load->config('image');
         $this->image_directory = $this->config->item("image_directory");
         $this->default_full_image = $this->config->item("default_full_image");
@@ -31,16 +33,30 @@ class Image extends Controller{
         echo "";
     }
 
-    function thumb_50_50() {
-        $domain = $this->get_domain_from_uri();
+    function test() {
+        $url = $this->input->post('url');
 
-        $this->ImageQueue->register_url($domain);
+        if ($url) {
+            $this->redirect("/image/full/".base64_encode($url).".jpg");
+        } else {
+            $this->render();
+        }
+    }
+
+    function thumb_50_50() {
+        $url = $this->get_url_from_uri();
+
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
         
         $image_path = $this->image_directory."/".$this->default_thumb_image;
 
-        if (strlen($domain) > 0) {
-            if (file_exists($this->image_directory."/".md5($domain).".jpg")) {
-                $image_path = $this->image_directory."/thumb_50_50_".md5($domain).".jpg";
+        if (strlen($url) > 0) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/thumb_50_50_".md5($url).".jpg";
             }
         }
 
@@ -48,15 +64,19 @@ class Image extends Controller{
     }
 
     function thumb_200_200() {
-        $domain = $this->get_domain_from_uri();
+        $url = $this->get_url_from_uri();
 
-        $this->ImageQueue->register_url($domain);
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
 
         $image_path = $this->image_directory."/".$this->default_thumb_image;
 
-        if (strlen($domain) > 0) {
-            if (file_exists($this->image_directory."/".md5($domain).".jpg")) {
-                $image_path = $this->image_directory."/thumb_200_200_".md5($domain).".jpg";
+        if (strlen($url) > 0) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/thumb_200_200_".md5($url).".jpg";
             }
         }
 
@@ -64,29 +84,32 @@ class Image extends Controller{
     }
 
     function full() {
-        $domain = $this->get_domain_from_uri();
-        $this->ImageQueue->register_url($domain);
+        $url = $this->get_url_from_uri();
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
         $image_path = $this->image_directory."/".$this->default_full_image;
 
-        if (($domain) && (strlen($domain) > 0)) {
-            if (file_exists($this->image_directory."/".md5($domain).".jpg")) {
-                $image_path = $this->image_directory."/".md5($domain).".jpg";
+        if (($url) && (strlen($url) > 0)) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/".md5($url).".jpg";
             }
         }
         
         $this->return_image($image_path);
-        
     }
 
     
 
 
     /* Private functions */
-    private function get_domain_from_uri() {
+    private function get_url_from_uri() {
 
         if ($this->uri->total_segments() > 2) {
-            //remove the .gif at the end
-            return "http://".preg_replace("/.jpg$/", "", $this->uri->segment(3));
+            $base64_url = preg_replace("/.jpg$/", "", $this->uri->segment(3));
+            return base64_decode($base64_url);
         } else {
             return null;
         }
@@ -96,6 +119,15 @@ class Image extends Controller{
         $image_data = file_get_contents($image_path);
         header("Content-Type: image/gif");
         echo $image_data;
+    }
+
+    private function is_refresh_request() {
+        if ($this->uri->total_segments() > 3) {
+            if ($this->uri->segment(4) == "refresh") {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
