@@ -11,12 +11,14 @@ $i = new ImageAPI();
 
 while (1) {
 
-    $url = $i->get_next_url();
+    $url_data = $i->get_next_url();
 
-    if (strlen($url) > 0) {
+    print_r($url_data["url"]);
+
+    if (strlen($url_data["url"]) > 0) {
         $w = new WebShot("C:\\isocket_images\\");
-        $w->process($url);
-        $i->completed_url($url, "C:\\isocket_images\\");
+        $status = $w->process($url_data);
+        $i->completed_url($url_data, "C:\\isocket_images\\", $status);
     } else {
         sleep(5);
     }

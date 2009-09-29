@@ -13,22 +13,33 @@
      public $thumb2_width = 200;
      public $thumb2_height = 200;
 
-     public $crop_width = 800;
-     public $crop_height = 600;
+     public $crop_width = 1000;
+     public $crop_height = 800;
 
 
      public function WebShot($output_dir){
         $this->output_dir = $output_dir;
      }
 
-     public function process($url) {
-        $this->take_snapshot($url);
-        //Check if the thumbnail was indeed created
-        if ($this->snapshot_exists($url)) {
-            $this->crop_image($url, $this->crop_width, $this->crop_height);
-            $this->make_thumbnail($url, $this->thumb1_width, $this->thumb1_height);
-            $this->make_thumbnail($url, $this->thumb2_width, $this->thumb2_height);
+     public function process($url_data) {
+        $url = $url_data["url"];
+        $sizes = $url_data["sizes"];
+        $status = $this->take_snapshot($url);
+        if ($status == "200") {
+            //Check if the thumbnail was indeed created
+            if ($this->snapshot_exists($url)) {
+                $this->crop_image($url, $this->crop_width, $this->crop_height);
+                foreach(explode(',', $sizes) as $size) {
+                    $size_arr = explode('_', $size);
+                    if (sizeof($size_arr) == 2) {
+                        $width = $size_arr[0];
+                        $height = $size_arr[1];
+                        $this->make_thumbnail($url, $width, $height);
+                    }
+                }
+            }
         }
+        return $status;
      }
 
      private function crop_image($url, $cwidth, $cheight) {
@@ -63,19 +74,32 @@
          return $this->output_dir."\\thumb_".$width."_".$height."_".md5($url).".jpg";
      }
      private function take_snapshot($url) {
+
+        $error = "";
+        $http_status = "";
+
         $webshot = new COM("{B10527B6-F84A-499f-873C-ABAF0DC1D696}");
         $webshot->DllInit($this->output_dir."\\debug.log", 2);
         $handle = $webshot->Create();
-        $webshot->SetBrowserWidthMinimum($handle, 800);
-        $webshot->SetBrowserHeightMinimum($handle, 600);
+        $webshot->SetBrowserWidthMinimum($handle, 1000);
+        $webshot->SetBrowserHeightMinimum($handle, 800);
         $webshot->SetBrowserVisible($handle, 0);
         $webshot->SetVerbose($handle, 1);
         $webshot->SetOutputPath($handle, $this->output_dir."\\%m.jpg");
         echo "Taking Snapshot of ".$url."\n";
         $webshot->Open($handle, $url);
+        $error = (string) $webshot->GetError($handle);
+        $http_status = (string) $webshot->GetHttpCode($handle);
         $webshot->Destroy($handle);
         $webshot->DllUninit();
         $webshot = null;
+        if (strlen($error) > 0 ) {
+            //return $error;
+            return "404";
+        } else {
+            return $http_status;
+        }
+
      }
  }
 ?>
