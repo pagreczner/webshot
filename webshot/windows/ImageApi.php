@@ -6,8 +6,8 @@
 
 class ImageAPI {
 
-    public $next_pending_url = "http://192.168.23.13:7003/api/next_pending_url";
-    public $completed_url = "http://192.168.23.13:7003/api/completed_url";
+    public $next_pending_url = "http://imageq.isocket.com/api/next_pending_url";
+    public $completed_url = "http://imageq.isocket.com/api/completed_url";
 
 
     public function ImageAPI() {

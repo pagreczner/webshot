@@ -11,16 +11,22 @@ $i = new ImageAPI();
 
 while (1) {
 
-    $url_data = $i->get_next_url();
 
-    print_r($url_data["url"]);
+
+    $url_data = $i->get_next_url();
 
     if (strlen($url_data["url"]) > 0) {
         $w = new WebShot("C:\\isocket_images\\");
+        try {
         $status = $w->process($url_data);
+        } catch (Exception $e) {
+            print "Image Snapshot Exception for ".$url_data["url"];
+            print $e->toString()."\n";
+        }
         $i->completed_url($url_data, "C:\\isocket_images\\", $status);
-    } else {
-        sleep(5);
-    }
+    } 
+
+    sleep(5);
+    
 }
 ?>
