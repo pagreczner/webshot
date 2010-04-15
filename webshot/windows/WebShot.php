@@ -34,6 +34,7 @@
                     if (sizeof($size_arr) == 2) {
                         $width = $size_arr[0];
                         $height = $size_arr[1];
+						if ($height < $width) $this->crop_image($url, $width, $height);
                         $this->make_thumbnail($url, $width, $height);
                     }
                 }
@@ -82,9 +83,17 @@
         $webshot->DllInit($this->output_dir."\\debug.log", 2);
         $handle = $webshot->Create();
         $webshot->SetBrowserWidthMinimum($handle, 1000);
-        $webshot->SetBrowserHeightMinimum($handle, 800);
-        $webshot->SetBrowserVisible($handle, 0);
+		$webshot->SetBrowserWidthMaximum($handle, 1000); // Inserted to fix a bug where a site widens the browser, making the API capture a blank corner
+        $webshot->SetBrowserHeightMinimum($handle, 1000);
+		$webshot->SetBrowserHeightMaximum($handle, 1000); // Inserted to save time on sites which are super long - like blogs
+        $webshot->SetBrowserVisible($handle, 1);
+        $webshot->SetPageTimeout($handle, 120); //increased to 120 from 60 as some sites fail to load by 60 sec
         $webshot->SetVerbose($handle, 1);
+		$webshot->SetImageHeight($handle, 508); //The largest image now needed is 508x345px so no need to save a image bigger than that.
+		$webshot->SetImagewidth($handle, 508);
+		//$webshot->SetDisableScripts  ($handle, 1);
+
+		
         $webshot->SetOutputPath($handle, $this->output_dir."\\%m.jpg");
         echo "Taking Snapshot of ".$url."\n";
         $webshot->Open($handle, $url);
