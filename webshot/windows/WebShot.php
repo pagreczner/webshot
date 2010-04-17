@@ -28,13 +28,13 @@
         if ($status == "200") {
             //Check if the thumbnail was indeed created
             if ($this->snapshot_exists($url)) {
-                $this->crop_image($url, $this->crop_width, $this->crop_height);
+                //$this->crop_image($url, $this->crop_width, $this->crop_height);
                 foreach(explode(',', $sizes) as $size) {
                     $size_arr = explode('_', $size);
                     if (sizeof($size_arr) == 2) {
                         $width = $size_arr[0];
                         $height = $size_arr[1];
-						if ($height < $width) $this->crop_image($url, $width, $height);
+						if ($height < $width) $this->crop_image($url, 508, 508/$width*$height);
                         $this->make_thumbnail($url, $width, $height);
                     }
                 }
