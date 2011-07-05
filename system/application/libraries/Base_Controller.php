@@ -20,6 +20,7 @@ class Base_Controller extends Controller {
     protected $page_title = "ISocket Images";
 
     function Base_Controller() {
+    	    	
         parent::Controller();
 
         $this->load->helper('url');

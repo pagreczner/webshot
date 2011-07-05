@@ -92,25 +92,26 @@ class REST_Controller extends Controller {
     	{
     		$this->output->set_status_header(404);
     		return;
-    	}
+    	}    	
 	    
     	$this->output->set_status_header($http_code);
         
         // If the format method exists, call and return the output in that format
         if(method_exists($this, '_'.$this->_format))
-        {
+        {        	
 	    	// Set a XML header
 	    	$this->output->set_header('Content-type: '.$this->_supported_formats[$this->_format]);
     	
-        	$formatted_data = $this->{'_'.$this->_format}($data);
+        	$formatted_data = $this->{'_'.$this->_format}($data);        	
+        	
         	$this->output->set_output( $formatted_data );
         }
         
         // Format not supported, output directly
-        else
+        else        
 		{
         	$this->output->set_output( $data );
-        }
+        }                
     }
 
     

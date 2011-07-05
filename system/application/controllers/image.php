@@ -22,11 +22,14 @@ class Image extends Base_Controller{
    function Image()
 	{
 		parent::Base_Controller();
-        $this->load->config('image');
+        $this->load->config('image');        
         $this->image_directory = $this->config->item("image_directory");
         $this->default_full_image = $this->config->item("default_full_image");
         $this->default_thumb_image = $this->config->item("default_thumb_image");
-        $this->load->model('ImageQueue');
+        $this->default_508_image = $this->config->item("default_508_image");
+	$this->default_268_image = $this->config->item("default_268_image");
+	$this->default_200_image = $this->config->item("default_200_image");
+	$this->load->model('ImageQueue');
 	}
 
     function index() {
@@ -35,7 +38,7 @@ class Image extends Base_Controller{
 
     function test() {
         $url = $this->input->post('url');
-
+  
         if ($url) {
             $this->redirect("/image/full/".base64_encode($url).".jpg");
         } else {
@@ -72,11 +75,73 @@ class Image extends Base_Controller{
             $this->ImageQueue->refresh_url($url);
         }
 
-        $image_path = $this->image_directory."/".$this->default_thumb_image;
+        $image_path = $this->image_directory."/".$this->default_200_image;
 
         if (strlen($url) > 0) {
             if (file_exists($this->image_directory."/".md5($url).".jpg")) {
                 $image_path = $this->image_directory."/thumb_200_200_".md5($url).".jpg";
+            }
+        }
+
+        $this->return_image($image_path);
+    }
+
+
+    function thumb_250_250() {
+        $url = $this->get_url_from_uri();
+
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
+
+        $image_path = $this->image_directory."/".$this->default_200_image;
+
+        if (strlen($url) > 0) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/thumb_250_250_".md5($url).".jpg";
+            }
+	}
+
+        $this->return_image($image_path);
+    }
+
+
+    function thumb_508_345() {
+        $url = $this->get_url_from_uri();
+
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
+
+        $image_path = $this->image_directory."/".$this->default_508_image;        
+
+        if (strlen($url) > 0) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/thumb_508_345_".md5($url).".jpg";
+            }
+        }
+
+        $this->return_image($image_path);
+    }
+
+	function thumb_268_182() {
+        $url = $this->get_url_from_uri();
+
+        $this->ImageQueue->register_url($url);
+
+        if ($this->is_refresh_request()) {
+            $this->ImageQueue->refresh_url($url);
+        }
+
+        $image_path = $this->image_directory."/".$this->default_268_image;
+
+        if (strlen($url) > 0) {
+            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
+                $image_path = $this->image_directory."/thumb_268_182_".md5($url).".jpg";
             }
         }
 
@@ -121,7 +186,8 @@ class Image extends Base_Controller{
         echo $image_data;
     }
 
-    private function is_refresh_request() {
+    private function is_refresh_request() {    	    	
+    	    	
         if ($this->uri->total_segments() > 3) {
             if ($this->uri->segment(4) == "refresh") {
                 return true;

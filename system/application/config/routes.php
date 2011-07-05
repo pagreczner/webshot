@@ -41,8 +41,7 @@
 */
 
 $route['default_controller'] = "home";
-$route['image/full/(:any)?(:any)'] = "image/full/$1/$2";
-$route['image/test(:any)'] = "image/test";
+$route['image/full/(:any)'] = "image/full";
 
 $route['scaffolding_trigger'] = "";
 
