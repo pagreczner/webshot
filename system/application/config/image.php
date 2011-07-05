@@ -5,7 +5,8 @@
 | Image Directory
 |--------------------------------------------------------------------------
 */
-$config['image_directory'] = '/home/gaki/webshot/isocket_images';
+$config['image_directory'] = 'home/imageq/isocket_images';
+#$config['image_directory'] = '/home/gaki/isocket_images';
 
 $config['default_full_image'] = 'default_full.jpg';
 

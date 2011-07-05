@@ -38,8 +38,10 @@ $active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root";
-$db['default']['password'] = "macaco";
+$db['default']['username'] = "imageq";
+#$db['default']['username'] = "root";
+$db['default']['password'] = "isocket456";
+#$db['default']['password'] = "macaco";
 $db['default']['database'] = "imageq_isocketimages";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";

@@ -11,7 +11,8 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://imageq/";
+$config['base_url']	= "http://imageq.isocket.com/";
+#$config['base_url']	= "http://imageq/";
 
 /*
 |--------------------------------------------------------------------------
