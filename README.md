@@ -5,7 +5,7 @@
 
 ### firefox
 
-    `yum install firefox`
+    yum install firefox
 
 ### xfs
 
