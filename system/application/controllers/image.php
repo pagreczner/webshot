@@ -181,9 +181,13 @@ class Image extends Base_Controller{
     }
 
     private function return_image($image_path) {
+        if( !file_exists($image_path)){ 
+          show_404('file does not exist, make sure you configure the default images correctly');
+        }
+        $path_parts = pathinfo($image_path);
         $image_data = file_get_contents($image_path);
-        header("Content-Type: image/gif");
-        echo $image_data;
+        header("Content-Type: image/".$path_parts['extension']);
+        print $image_data;
     }
 
     private function is_refresh_request() {    	    	
