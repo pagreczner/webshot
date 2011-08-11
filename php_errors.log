@@ -1,0 +1,31 @@
+[11-Aug-2011 13:54:05] PHP Warning:  require_once(/home/alicia/imageq/system/codeigniter/CodeIgniter.php): failed to open stream: No such file or directory in /home/alicia/imageq/index.php on line 115
+[11-Aug-2011 13:54:05] PHP Stack trace:
+[11-Aug-2011 13:54:05] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 13:54:05] PHP Fatal error:  require_once(): Failed opening required '/home/alicia/imageq/system/codeigniter/CodeIgniter.php' (include_path='.:/usr/local/lib/php') in /home/alicia/imageq/index.php on line 115
+[11-Aug-2011 13:54:05] PHP Stack trace:
+[11-Aug-2011 13:54:05] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 13:55:42] PHP Fatal error:  Class 'Controller' not found in /home/alicia/imageq/system/application/controllers/home.php on line 3
+[11-Aug-2011 13:55:42] PHP Stack trace:
+[11-Aug-2011 13:55:42] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 13:55:42] PHP   2. require_once() /home/alicia/imageq/index.php:115
+[11-Aug-2011 13:55:42] PHP   3. include() /home/alicia/imageq/system/core/CodeIgniter.php:248
+[11-Aug-2011 13:58:47] PHP Fatal error:  Call to undefined method CI_Controller::Controller() in /home/alicia/imageq/system/application/libraries/REST_Controller.php on line 29
+[11-Aug-2011 13:58:47] PHP Stack trace:
+[11-Aug-2011 13:58:47] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 13:58:47] PHP   2. require_once() /home/alicia/imageq/index.php:115
+[11-Aug-2011 13:58:47] PHP   3. Api->Api() /home/alicia/imageq/system/core/CodeIgniter.php:288
+[11-Aug-2011 13:58:47] PHP   4. REST_Controller->REST_Controller() /home/alicia/imageq/system/application/controllers/api.php:23
+[11-Aug-2011 13:59:37] PHP Fatal error:  Class 'Model' not found in /home/alicia/imageq/system/application/models/imagequeue.php on line 12
+[11-Aug-2011 13:59:37] PHP Stack trace:
+[11-Aug-2011 13:59:37] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 13:59:37] PHP   2. require_once() /home/alicia/imageq/index.php:115
+[11-Aug-2011 13:59:37] PHP   3. Api->Api() /home/alicia/imageq/system/core/CodeIgniter.php:288
+[11-Aug-2011 13:59:37] PHP   4. CI_Loader->model() /home/alicia/imageq/system/application/controllers/api.php:24
+[11-Aug-2011 13:59:37] PHP   5. require_once() /home/alicia/imageq/system/core/Loader.php:184
+[11-Aug-2011 14:00:39] PHP Fatal error:  Call to undefined method CI_Model::Model() in /home/alicia/imageq/system/application/models/imagequeue.php on line 15
+[11-Aug-2011 14:00:39] PHP Stack trace:
+[11-Aug-2011 14:00:39] PHP   1. {main}() /home/alicia/imageq/index.php:0
+[11-Aug-2011 14:00:39] PHP   2. require_once() /home/alicia/imageq/index.php:115
+[11-Aug-2011 14:00:39] PHP   3. Api->Api() /home/alicia/imageq/system/core/CodeIgniter.php:288
+[11-Aug-2011 14:00:39] PHP   4. CI_Loader->model() /home/alicia/imageq/system/application/controllers/api.php:24
+[11-Aug-2011 14:00:39] PHP   5. Imagequeue->Imagequeue() /home/alicia/imageq/system/core/Loader.php:188

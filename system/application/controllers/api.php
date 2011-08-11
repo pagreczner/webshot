@@ -19,7 +19,7 @@ class Api extends REST_Controller {
 
     public $image_sizes = "200_200,50_50,508_345,268_182";
 
-    function Api() {
+    function __construct() {
         parent::REST_Controller();
         $this->load->model('ImageQueue');
         $this->load->config('image');

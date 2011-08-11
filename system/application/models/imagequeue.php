@@ -9,10 +9,10 @@
  *
  * @author root
  */
-class Imagequeue extends Model{
+class Imagequeue extends CI_Model{
 
     public function Imagequeue() {
-        parent::Model();
+        parent::__construct();
     }
 
     public function register_url($url) {

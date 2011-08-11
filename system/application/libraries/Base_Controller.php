@@ -9,7 +9,7 @@
  *
  * @author root
  */
-class Base_Controller extends Controller {
+class Base_Controller extends CI_Controller {
     //put your code here
 
     protected $data = array();
@@ -21,7 +21,7 @@ class Base_Controller extends Controller {
 
     function Base_Controller() {
     	    	
-        parent::Controller();
+        parent::__construct();
 
         $this->load->helper('url');
         
