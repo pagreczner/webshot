@@ -38,9 +38,9 @@ $active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root";
-$db['default']['password'] = "isocket";
-$db['default']['database'] = "imageq";
+$db['default']['username'] = "imageq";
+$db['default']['password'] = "isocket456";
+$db['default']['database'] = "imageq_isocketimages";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
