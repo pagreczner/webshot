@@ -5,7 +5,7 @@
 | Image Directory
 |--------------------------------------------------------------------------
 */
-$config['image_directory'] = '/home/imageq/images';
+$config['image_directory'] = BASEPATH.'/../images';
 
 $config['default_full_image'] = 'default_full.jpg';
 
