@@ -2,6 +2,7 @@
 
 ### imagemagick
 
+    yum install ImageMagick
 
 ### firefox
 
@@ -10,6 +11,10 @@
 ### xfs
 
 ### xvfb
+    
+    yum install Xvfb
+    yum install xorg-x11-fonts*
+    yum install xorg-x11-server-Xorg
 
 ## Configurations
 

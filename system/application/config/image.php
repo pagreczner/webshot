@@ -6,6 +6,7 @@
 |--------------------------------------------------------------------------
 */
 $config['image_directory'] = BASEPATH.'/../images';
+$config['image_tmp_dir'] = BASEPATH.'/../tmp';
 
 $config['default_full_image'] = 'default_full.jpg';
 
