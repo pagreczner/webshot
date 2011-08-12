@@ -7,6 +7,8 @@
 */
 $config['image_directory'] = BASEPATH.'/../images';
 $config['image_tmp_dir'] = BASEPATH.'/../tmp';
+$config['image_firefox'] = '/usr/bin/firefox';
+$config['image_xvfb'] = '/usr/bin/Xvfb';
 
 $config['default_full_image'] = 'default_full.jpg';
 
