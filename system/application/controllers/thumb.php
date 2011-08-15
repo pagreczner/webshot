@@ -57,7 +57,7 @@ class Thumb extends CI_Controller {
       foreach( self::$image_sizes as $size)
       {
         $filename = $this->image_directory.'/thumb_'.str_replace('x','_',$size).'_'.md5($url).'jpg';
-        system('convert '.$origin.' -resize '.$size.'# '.$filename); 
+        system('convert '.$origin.' -resize #'.$size.' '.$filename); 
       }
     }
 }
