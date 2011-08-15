@@ -36,16 +36,17 @@ class Thumb extends CI_Controller {
       
       // remove left ove locks
       unlink('/tmp/.X5-lock');
-      array_map( "unlink", glob( '/root/.mozilla/firefox/*'));
+      system('rm -rf /root/.mozilla/firefox/*');
     }
     public function capture($url = null)
     {
+      $log = '/dev/null';
       if(! $url) $url = $this->ImageQueue->get_next_pending_url();
       $filename = $this->image_tmp_dir.'/origin.png';
       // start X11 screen
       $code = null;
-      system($this->Xvfb.' :5 -screen 0 1024x768x24 &', $code);
-      system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &', $code);
+      system($this->Xvfb.' :5 -screen 0 1024x768x24 &> '.$log.' &', $code);
+      system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &>'.$log.' &', $code);
       sleep(15);
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
       $size = filesize($filename);
