@@ -55,7 +55,7 @@ class Thumb extends CI_Controller {
         echo 'file does not exist';
         return;
       }
-      foreach( self::$image_sizes as $size)
+      foreach( $this->image_sizes as $size)
       {
         $filename = $this->image_directory.'/thumb_'.$size.'_'.md5($url).'.jpg';
         system('convert '.$origin.' -resize '.str_replace('_','x',$size).' '.$filename); 
