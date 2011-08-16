@@ -19,23 +19,14 @@ class Image extends Base_Controller{
    public $default_full_image = null;
    public $default_thumb_image = null;
 
-   function Image()
+   function __construct()
 	{
-		parent::Base_Controller();
-        $this->load->config('image');        
-        $this->image_directory = $this->config->item("image_directory");
-        $this->default_full_image = $this->config->item("default_full_image");
-        $this->default_thumb_image = $this->config->item("default_thumb_image");
-        $this->default_508_image = $this->config->item("default_508_image");
-	$this->default_268_image = $this->config->item("default_268_image");
-	$this->default_200_image = $this->config->item("default_200_image");
-	$this->load->model('ImageQueue');
+		parent::__construct();
+    $this->load->config('image');        
+    $this->image_directory = realpath($this->config->item("image_directory"));
+    $this->sizes = $this->config->item("sizes");
+	  $this->load->model('ImageQueue');
 	}
-
-    function index() {
-        echo "";
-    }
-
     function test() {
         $url = $this->input->post('url');
   
@@ -46,127 +37,40 @@ class Image extends Base_Controller{
         }
     }
 
-    function thumb_50_50() {
-        $url = $this->get_url_from_uri();
+    private function thumb($width, $height)
+    {
+      $url = $this->get_url_from_uri();
+      if (! ImageQueue::isValidURL($url)){
 
-        $this->ImageQueue->register_url($url);
+          show_404('file does not exist, invalid url '.$url);
+      }
+      $this->ImageQueue->register_url($url);
 
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-        
-        $image_path = $this->image_directory."/".$this->default_thumb_image;
-
-        if (strlen($url) > 0) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/thumb_50_50_".md5($url).".jpg";
-            }
-        }
-
-        $this->return_image($image_path);
+      if ($this->is_refresh_request()) {
+        $this->ImageQueue->refresh_url($url);
+      }
+      $image_path = $this->image_directory."/".$this->sizes[$width.'_'.$height];
+      $filename = $this->image_directory."/thumb_".$width."_".$height."_".md5($url).".jpg";
+      if (file_exists($filename)){ 
+        $image_path = $filename;
+      }
+      $this->return_image($image_path);
     }
-
-    function thumb_200_200() {
-        $url = $this->get_url_from_uri();
-
-        $this->ImageQueue->register_url($url);
-
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-
-        $image_path = $this->image_directory."/".$this->default_200_image;
-
-        if (strlen($url) > 0) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/thumb_200_200_".md5($url).".jpg";
-            }
-        }
-
-        $this->return_image($image_path);
+    function thumb_50_50(){
+      return $this->thumb(50,50);
     }
-
-
-    function thumb_250_250() {
-        $url = $this->get_url_from_uri();
-
-        $this->ImageQueue->register_url($url);
-
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-
-        $image_path = $this->image_directory."/".$this->default_200_image;
-
-        if (strlen($url) > 0) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/thumb_250_250_".md5($url).".jpg";
-            }
-	}
-
-        $this->return_image($image_path);
+    function thumb_200_200(){
+      return $this->thumb(200,200);
     }
-
-
     function thumb_508_345() {
-        $url = $this->get_url_from_uri();
-
-        $this->ImageQueue->register_url($url);
-
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-
-        $image_path = $this->image_directory."/".$this->default_508_image;        
-
-        if (strlen($url) > 0) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/thumb_508_345_".md5($url).".jpg";
-            }
-        }
-
-        $this->return_image($image_path);
+        return $this->thumb(508,345);
     }
-
-	function thumb_268_182() {
-        $url = $this->get_url_from_uri();
-
-        $this->ImageQueue->register_url($url);
-
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-
-        $image_path = $this->image_directory."/".$this->default_268_image;
-
-        if (strlen($url) > 0) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/thumb_268_182_".md5($url).".jpg";
-            }
-        }
-
-        $this->return_image($image_path);
+    function thumb_268_182(){
+      return $this->thumb(268,182);
     }
-
     function full() {
-        $url = $this->get_url_from_uri();
-        $this->ImageQueue->register_url($url);
-
-        if ($this->is_refresh_request()) {
-            $this->ImageQueue->refresh_url($url);
-        }
-        $image_path = $this->image_directory."/".$this->default_full_image;
-
-        if (($url) && (strlen($url) > 0)) {
-            if (file_exists($this->image_directory."/".md5($url).".jpg")) {
-                $image_path = $this->image_directory."/".md5($url).".jpg";
-            }
-        }
-        
-        $this->return_image($image_path);
+        return $this->thumb();
     }
-
-    
 
 
     /* Private functions */

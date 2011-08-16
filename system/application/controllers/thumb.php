@@ -11,18 +11,16 @@
  */
 class Thumb extends CI_Controller {
 
-    public $image_directory = null;
-
-    public static $image_sizes = array('200x200','50x50','508x345','268x182');
-
+    public $image_directory = '';
+    public $image_sizes = array('50_50','200_200','508_345','268_182');
     function __construct() {
         parent::__construct();
         $this->load->model('ImageQueue');
         $this->load->config('image');
         $this->image_directory = realpath($this->config->item("image_directory"));
-        $this->image_tmp_dir = realpath($this->config->item("image_tmp_dir"));
         $this->Xvfb = realpath($this->config->item("image_xvfb"));
         $this->firefox = realpath($this->config->item("image_firefox"));
+        $this->image_sizes = array_keys($this->config->item("sizes"));
     }
     public function clean()
     {
@@ -50,6 +48,7 @@ class Thumb extends CI_Controller {
       system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &>'.$log.' &', $code);
       sleep(15);
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
+      system('mogrify -crop 885x587+0+157 '.$filename);
       if(file_exists($filename))return $url; 
       return false;
     }
@@ -62,8 +61,8 @@ class Thumb extends CI_Controller {
       }
       foreach( self::$image_sizes as $size)
       {
-        $filename = $this->image_directory.'/thumb_'.str_replace('x','_',$size).'_'.md5($url).'.jpg';
-        system('convert '.$origin.' -resize '.$size.' '.$filename); 
+        $filename = $this->image_directory.'/thumb_'.$size.'_'.md5($url).'.jpg';
+        system('convert '.$origin.' -resize '.str_replace('_','x',$size).' '.$filename); 
       }
     }
     public function index()

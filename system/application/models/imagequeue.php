@@ -14,7 +14,10 @@ class Imagequeue extends CI_Model{
     public function Imagequeue() {
         parent::__construct();
     }
-
+    public static function isValidURL($url)
+    {
+      return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+    }
     public function register_url($url) {
         $this->db->where('url', $url);
         $query = $this->db->get('image_queue');
