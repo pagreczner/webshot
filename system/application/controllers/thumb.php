@@ -38,10 +38,11 @@ class Thumb extends CI_Controller {
       unlink('/tmp/.X5-lock');
       system('rm -rf /root/.mozilla/firefox/*');
     }
-    public function capture($url, $log = null)
+    public function capture($url=null, $log = null)
     {
       $log= ($log)?$log: '/dev/null';
       if(! $url) $url = $this->ImageQueue->get_next_pending_url();
+      if(! $url) return false;
       $filename = $this->image_directory.'/'.md5($url).'.png';
       // start X11 screen
       $code = null;
@@ -49,7 +50,8 @@ class Thumb extends CI_Controller {
       system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &>'.$log.' &', $code);
       sleep(15);
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
-      $size = filesize($filename);
+      if(file_exists($filename))return $url; 
+      return false;
     }
     public function generate($url)
     {
@@ -63,6 +65,15 @@ class Thumb extends CI_Controller {
         $filename = $this->image_directory.'/thumb_'.str_replace('x','_',$size).'_'.md5($url).'.jpg';
         system('convert '.$origin.' -resize '.$size.' '.$filename); 
       }
+    }
+    public function index()
+    {
+      $this->clean();
+      while($url = $this->capture()){
+        $this->generate($url);
+        $this->clean();
+        $this->ImageQueue->set_image_completed($url, 200);
+      } 
     }
 }
 ?>
