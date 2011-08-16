@@ -24,10 +24,6 @@ class Thumb extends CI_Controller {
     }
     public function clean()
     {
-      // delete  tmp files
-      $mask = $this->image_tmp_dir.'/temp*';
-      array_map( "unlink", glob( $mask ) );
-      
       // stop Xvfb & firefox
       system('killall -9 Xvfb');
       system('killall -9 firefox');
