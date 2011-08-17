@@ -18,8 +18,7 @@ class Thumb extends CI_Controller {
         $this->load->model('ImageQueue');
         $this->load->config('image');
         $this->image_directory = realpath($this->config->item("image_directory"));
-        $this->Xvfb = realpath($this->config->item("image_xvfb"));
-        $this->firefox = realpath($this->config->item("image_firefox"));
+        // We don't need the default images, only the sizes
         $this->image_sizes = array_keys($this->config->item("sizes"));
     }
     public function clean()
@@ -40,12 +39,16 @@ class Thumb extends CI_Controller {
       $filename = $this->image_directory.'/'.md5($url).'.png';
       // start X11 screen
       $code = null;
-      system($this->Xvfb.' :5 -screen 0 1024x768x24 &> '.$log.' &', $code);
+      system('Xvfb :5 -screen 0 1024x768x24 &> '.$log.' &', $code);
+      // start firefox inside it
       system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &>'.$log.' &', $code);
+      // waite for 15 seconds for the page to render
       sleep(15);
+      // capture the window
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
+      // crop off the top
       system('mogrify -crop 885x587+0+157 '.$filename);
-      if(file_exists($filename))return $url; 
+      if(file_exists($filename))return true; 
       return false;
     }
     public function generate($url)
@@ -63,11 +66,18 @@ class Thumb extends CI_Controller {
     }
     public function index()
     {
-      $this->clean();
-      while($url = $this->capture()){
-        $this->generate($url);
+      while( $url = $this->ImageQueue->get_next_pending_url())
+      {
         $this->clean();
-        $this->ImageQueue->set_image_completed($url, 200);
+        if( $this->capture($url))
+        {
+          $this->generate($url);
+          $this->ImageQueue->set_image_completed($url, 200);
+        }else{
+          // log on attempt 
+          $this->ImageQueue->set_image_completed($url, 400);
+          log_message('warning', 'failed to capture screen shot for url: '.$url);
+        }
       } 
     }
 }

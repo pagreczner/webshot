@@ -19,10 +19,15 @@ class Imagequeue extends CI_Model{
       return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
     }
     public function register_url($url) {
+        if( ! self::isValidURL($url))
+        {
+          log_message('warning', 'Trying to regist an invalid url: '.$url);
+          return;
+        }
         $this->db->where('url', $url);
         $query = $this->db->get('image_queue');
 
-        if (!empty($url) && $query->num_rows == 0) {
+        if ( $query->num_rows == 0) {
             $data = array('url' => $url);
             $this->db->insert('image_queue', $data);
         }
@@ -46,21 +51,21 @@ class Imagequeue extends CI_Model{
     public function get_next_pending_url() {
        $this->db->where('http_status != "200" and num_tries < 4')->order_by('RAND()',"asc");
        $query = $this->db->get('image_queue');
-
+       $row = null;
         if ($query->num_rows > 0) {
             $row = $query->result();
-            return $row[0]->url;
         }
-
         else {
-               $this->db->where('http_status = "0"');
-               $query = $this->db->get('image_queue');
-
-                if ($query->num_rows > 0) {
-            $row = $query->result();
-            return $row[0]->url;
-         	}
+            $this->db->where('http_status = "0"');
+            $query = $this->db->get('image_queue');
+            if ($query->num_rows > 0) {
+               $row = $query->result();
+         	  }
         }
+        foreach($row as $r){
+           if( self::isValidURL($r->url)) return $r->url; 
+        }
+        return false;
 
 
 
