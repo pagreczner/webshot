@@ -29,7 +29,7 @@ class Thumb extends CI_Controller {
       system('killall -9 firefox');
       
       // remove left ove locks
-      unlink('/tmp/.X5-lock');
+      system('rm -rf /tmp/.X5-lock');
       system('rm -rf /root/.mozilla/firefox/*');
     }
     public function capture($url=null, $log = null)

@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 $config['image_directory'] = BASEPATH.'/../images';
-$config['image_tmp_dir'] = BASEPATH.'/../tmp';
+$config['default_directory'] = BASEPATH.'/../defaults';
 $config['image_firefox'] = '/usr/bin/firefox';
 $config['image_xvfb'] = '/usr/bin/Xvfb';
 $config['sizes']= array();

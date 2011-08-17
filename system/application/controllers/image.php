@@ -24,18 +24,10 @@ class Image extends Base_Controller{
 		parent::__construct();
     $this->load->config('image');        
     $this->image_directory = realpath($this->config->item("image_directory"));
+    $this->defaults_directory = realpath($this->config->item("defaults_directory"));
     $this->sizes = $this->config->item("sizes");
 	  $this->load->model('ImageQueue');
 	}
-    function test() {
-        $url = $this->input->post('url');
-  
-        if ($url) {
-            $this->redirect("/image/full/".base64_encode($url).".jpg");
-        } else {
-            $this->render();
-        }
-    }
 
     private function thumb($width, $height)
     {
@@ -49,7 +41,7 @@ class Image extends Base_Controller{
       if ($this->is_refresh_request()) {
         $this->ImageQueue->refresh_url($url);
       }
-      $image_path = $this->image_directory."/".$this->sizes[$width.'_'.$height];
+      $image_path = $this->defaults_directory."/".$this->sizes[$width.'_'.$height];
       $filename = $this->image_directory."/thumb_".$width."_".$height."_".md5($url).".jpg";
       if (file_exists($filename)){ 
         $image_path = $filename;

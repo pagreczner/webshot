@@ -1,1 +1,1 @@
-* * * * * sh /usr/local/screenshot/screenshot_taker.sh >> /usr/local/screenshot/log
+* * * * * php /var/www/imageq/index.php thumb >> /usr/local/screenshot/log
