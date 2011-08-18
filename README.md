@@ -50,3 +50,10 @@ In file `system/application/config/image.php` set the directory and make sure th
 
     $config['default_directory'] = '/var/www/imageq/defaults';
     $config['image_directory'] = '/var/www/imageq/images';
+
+configure the list of sizes you need as well.
+
+    $config['sizes']=array();
+    $config['sizes']['50_50']= '50_50_default_image_name';
+    ...
+    
