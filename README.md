@@ -48,5 +48,5 @@ $db['default']['dbdriver'] = "mysql";
 
 In file `system/application/config/image.php` set the directory and make sure the default images exists.
 
-    $config['defaults_directory'] = '/var/www/imageq/defaults';
+    $config['default_directory'] = '/var/www/imageq/defaults';
     $config['image_directory'] = '/var/www/imageq/images';
