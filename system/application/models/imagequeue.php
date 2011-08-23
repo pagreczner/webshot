@@ -51,7 +51,7 @@ class Imagequeue extends CI_Model{
     public function get_next_pending_url() {
        $this->db->where('http_status != "200" and num_tries < 4')->order_by('RAND()',"asc");
        $query = $this->db->get('image_queue');
-       $row = null;
+       $row = array();
         if ($query->num_rows > 0) {
             $row = $query->result();
         }
