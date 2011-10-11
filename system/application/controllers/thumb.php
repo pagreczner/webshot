@@ -85,6 +85,8 @@ class Thumb extends CI_Controller {
           $this->ImageQueue->set_image_completed($url, 400);
           log_message('warning', 'failed to capture screen shot for url: '.$url);
         }
+        
+        sleep(30);
       } 
     }
 }
