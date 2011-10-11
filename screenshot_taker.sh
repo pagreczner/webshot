@@ -38,8 +38,7 @@ if [ "$base_url" != "" ]; then
   rm -rf /tmp/.X5-lock
   rm -rf /root/.mozilla/firefox/*
   Xvfb :5 -screen 0 1024x768x24 &
-  /etc/init.d/xfs restart
-  DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 $url &
+  DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 -extension GLX $url &
   sleep 15
   DISPLAY=:5.0 import -window root $path/temp.png
    
