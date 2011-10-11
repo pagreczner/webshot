@@ -39,11 +39,12 @@ class Thumb extends CI_Controller {
       $filename = $this->image_directory.'/'.md5($url).'.png';
       // start X11 screen
       $code = null;
-      system('Xvfb :5 -screen 0 1024x768x24 -extension GLX &> '.$log.' &', $code);
+      system('Xvfb :5 -screen 0 1024x768x24 -extension GLX &> '.$log.' &', $code);      
+      sleep(1);      
       // start firefox inside it
       system('DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 '.$url.' &>'.$log.' &', $code);
-      // waite for 15 seconds for the page to render
-      sleep(15);
+      // wait for 15 seconds for the page to render
+      sleep(10);
       // capture the window
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
       // crop off the top
