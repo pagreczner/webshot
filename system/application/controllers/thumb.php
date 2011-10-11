@@ -76,10 +76,12 @@ class Thumb extends CI_Controller {
     }
     public function index()
     {
-      while( $url = $this->ImageQueue->get_next_pending_url())
+      $url = $this->ImageQueue->get_next_pending_url();
+      
+      if ($url)
       {
         $this->clean();
-        if( $this->capture($url,$this->image_directory.'/log'))
+        if($this->capture($url))
         {
           $this->generate($url);
           $this->ImageQueue->set_image_completed($url, 200);
@@ -87,9 +89,7 @@ class Thumb extends CI_Controller {
           // log on attempt 
           $this->ImageQueue->set_image_completed($url, 400);
           log_message('warning', 'failed to capture screen shot for url: '.$url);
-        }
-        
-        sleep(3);
+        }        
       } 
     }
 }
