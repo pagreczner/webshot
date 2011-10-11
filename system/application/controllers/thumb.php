@@ -48,7 +48,7 @@ class Thumb extends CI_Controller {
       // capture the window
       system('DISPLAY=:5.0 import -window root '.$filename, $code);
       // crop off the top
-      system('mogrify -crop 885x587+0+157 '.$filename);
+      system('mogrify -crop 885x572+0+157 '.$filename);
       
       if(!file_exists($filename))
       	return false;
