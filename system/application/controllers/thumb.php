@@ -35,7 +35,10 @@ class Thumb extends CI_Controller {
     {
       $log= ($log)?$log: '/dev/null';
       if(! $url) $url = $this->ImageQueue->get_next_pending_url();
-      if(! $url) return false;
+      
+      if(! $url) 
+      	return false;
+      	
       $filename = $this->image_directory.'/'.md5($url).'.png';
       // start X11 screen
       $code = null;
@@ -76,7 +79,7 @@ class Thumb extends CI_Controller {
       while( $url = $this->ImageQueue->get_next_pending_url())
       {
         $this->clean();
-        if( $this->capture($url))
+        if( $this->capture($url,$this->image_directory.'/log'))
         {
           $this->generate($url);
           $this->ImageQueue->set_image_completed($url, 200);
@@ -86,7 +89,7 @@ class Thumb extends CI_Controller {
           log_message('warning', 'failed to capture screen shot for url: '.$url);
         }
         
-        sleep(30);
+        sleep(3);
       } 
     }
 }
