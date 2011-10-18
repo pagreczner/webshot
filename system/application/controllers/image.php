@@ -43,6 +43,7 @@ class Image extends Base_Controller{
       }
       $image_path = $this->defaults_directory."/".$this->sizes[$width.'_'.$height];
       $filename = $this->image_directory."/thumb_".$width."_".$height."_".md5($url).".jpg";
+var_dump($filename);
       if (file_exists($filename)){ 
         $image_path = $filename;
       }
