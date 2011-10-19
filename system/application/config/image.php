@@ -6,10 +6,10 @@
 |--------------------------------------------------------------------------
 */
 // where to store the created the thumbnails
-$config['image_directory'] = BASEPATH.'/../images';
+$config['image_directory'] = BASEPATH.'../images';
 
 // where to find the default images
-$config['default_directory'] = BASEPATH.'/../defaults';
+$config['default_directory'] = BASEPATH.'../defaults';
 
 /*
  | supported size and their default images

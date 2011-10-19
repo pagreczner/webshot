@@ -35,8 +35,8 @@ if [ "$base_url" != "" ]; then
   echo '* getting '$base_url
 
   ##get the screenshot 
-  killall -9 Xvfb
   killall -9 firefox
+  killall -17 Xvfb
   rm -rf /tmp/.X5-lock
   rm -rf /root/.mozilla/firefox/*
   
@@ -99,7 +99,7 @@ if [ "$base_url" != "" ]; then
 fi
 
 killall -9 firefox >> /dev/null
-killall -9 Xvfb >> /dev/null
+killall -17 Xvfb >> /dev/null
 rm -rf /tmp/.X5-lock 
 
 echo '******* end'
