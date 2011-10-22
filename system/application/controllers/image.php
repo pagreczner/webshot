@@ -46,7 +46,14 @@ class Image extends Base_Controller{
       if (file_exists($filename)){ 
         $image_path = $filename;
       }
+
       $this->return_image($image_path);
+    }
+    function thumb_275_175(){
+      return $this->thumb(275,175);
+    }
+    function thumb_275_165(){
+      return $this->thumb(275,165);
     }
     function thumb_50_50(){
       return $this->thumb(50,50);

@@ -17,7 +17,7 @@ class Api extends REST_Controller {
 
     public $image_directory = null;
 
-    public $image_sizes = "200_200,50_50,508_345,268_182";
+    public $image_sizes = "200_200,50_50,508_345,268_182,275_175,275_165";
 
     function __construct() {
         parent::REST_Controller();
@@ -74,8 +74,16 @@ class Api extends REST_Controller {
             $this->save_thumb_image($this->post('url'), $this->post('thumb_508_345_image'), "508_345");
         }
 
-		if ($this->post('thumb_268_182_image') != null) {
+	if ($this->post('thumb_268_182_image') != null) {
             $this->save_thumb_image($this->post('url'), $this->post('thumb_268_182_image'), "268_182");
+        }
+
+        if ($this->post('thumb_275_175_image') != null) { 
+            $this->save_thumb_image($this->post('url'), $this->post('thumb_275_175_image'), "275_175");
+        }
+
+        if ($this->post('thumb_275_165_image') != null) { 
+            $this->save_thumb_image($this->post('url'), $this->post('thumb_275_165_image'), "275_165");
         }
 
         
@@ -107,15 +115,22 @@ class Api extends REST_Controller {
             $this->copy_thumb_image($this->post('url'), $this->post('t250'), "250_250");
         }
 
-
         if ($this->post('t508') != null) {
             $this->copy_thumb_image($this->post('url'), $this->post('t508'), "508_345");
         }
 
-		if ($this->post('t268') != null) {
+	if ($this->post('t268') != null) {
             $this->copy_thumb_image($this->post('url'), $this->post('t268'), "268_182");
         }
-        
+
+        if ($this->post('t275') != null) { 
+            $this->copy_thumb_image($this->post('url'), $this->post('t275'), "275_175");
+        }
+
+        if ($this->post('tt275') != null) {
+            $this->copy_thumb_image($this->post('url'), $this->post('tt275'), "275_165");
+        }
+
         $message = array('url' => $this->post('url'), 'message' => 'Completed!');
 
         $this->response($message, 200); // 200 being the HTTP response code   

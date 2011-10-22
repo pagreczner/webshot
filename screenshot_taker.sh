@@ -17,6 +17,10 @@ rm -rf $path/temp_200.jpg
 rm -rf $path/temp_200.png
 rm -rf $path/temp_50.jpg
 rm -rf $path/temp_50.png
+rm -rf $path/temp_275.jpg
+rm -rf $path/temp_275.png
+rm -rf $path/temp_275b.jpg
+rm -rf $path/temp_275b.png
 
 ##call the api to get what's next
 wget -O $path/temp.url $api_server/next_simple_url
@@ -77,8 +81,13 @@ if [ "$base_url" != "" ]; then
       mogrify -crop 1024x768+0+0 $path/temp.png
       cp $path/temp.png $path/temp_508.png
       cp $path/temp.png $path/temp_268.png
+      cp $path/temp.png $path/temp_275.png
+      cp $path/temp.png $path/temp_275b.png
       mogrify -resize 508x345 $path/temp_508.png
       mogrify -resize 268x182 $path/temp_268.png
+      mogrify -resize 275x175! $path/temp_275.png
+      mogrify -resize 275x165! $path/temp_275b.png
+
 
       ##convert them to jpg
       convert $path/temp.png $path/temp.jpg
@@ -86,11 +95,13 @@ if [ "$base_url" != "" ]; then
       convert $path/temp_268.png $path/temp_268.jpg
       convert $path/temp_250.png $path/temp_250.jpg
       convert $path/temp_200.png $path/temp_200.jpg
+      convert $path/temp_275.png $path/temp_275.jpg
+      convert $path/temp_275b.png $path/temp_275b.jpg
       convert $path/temp_50.png $path/temp_50.jpg
 
       ##post to the api
       echo '****** OK'
-      wget -O /dev/null --post-data="&url=$url&status=200&full=$path/temp.jpg&t50=$path/temp_50.jpg&t508=$path/temp_508.jpg&t268=$path/temp_268.jpg&t250=$path/temp_250.jpg&t200=$path/temp_200.jpg" $api_server/completed_no_windows
+      wget -O /dev/null --post-data="&url=$url&status=200&full=$path/temp.jpg&t50=$path/temp_50.jpg&t508=$path/temp_508.jpg&t268=$path/temp_268.jpg&t250=$path/temp_250.jpg&t200=$path/temp_200.jpg&t275=$path/temp_275.jpg&tt275=$path/temp_275b.jpg" $api_server/completed_no_windows
     else
       echo '****** NOT good'
       wget -O /dev/null --post-data="&url=$url&status=500" $api_server/completed_no_windows
