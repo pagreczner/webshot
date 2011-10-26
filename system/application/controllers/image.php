@@ -24,7 +24,7 @@ class Image extends Base_Controller{
 		parent::__construct();
     $this->load->config('image');        
     $this->image_directory = realpath($this->config->item("image_directory"));
-    $this->defaults_directory = realpath($this->config->item("defaults_directory"));
+    $this->default_directory = realpath($this->config->item("default_directory"));
     $this->sizes = $this->config->item("sizes");
 	  $this->load->model('ImageQueue');
 	}
@@ -41,12 +41,11 @@ class Image extends Base_Controller{
       if ($this->is_refresh_request()) {
         $this->ImageQueue->refresh_url($url);
       }
-      $image_path = $this->defaults_directory."/".$this->sizes[$width.'_'.$height];
+      $image_path = $this->default_directory."/".$this->sizes[$width.'_'.$height];
       $filename = $this->image_directory."/thumb_".$width."_".$height."_".md5($url).".jpg";
       if (file_exists($filename)){ 
         $image_path = $filename;
       }
-
       $this->return_image($image_path);
     }
     function thumb_275_175(){
@@ -85,6 +84,7 @@ class Image extends Base_Controller{
 
     private function return_image($image_path) {
         if( !file_exists($image_path)){ 
+          var_dump($image_path);
           show_404('file does not exist, make sure you configure the default images correctly');
         }
         $path_parts = pathinfo($image_path);
