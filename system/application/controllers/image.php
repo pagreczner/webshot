@@ -37,7 +37,12 @@ class Image extends Base_Controller{
 
           show_404('file does not exist, invalid url '.$url);
       }
-      $this->ImageQueue->register_url($url);
+      $isNew = $this->ImageQueue->register_url($url);
+     
+      if ($isNew)
+      {
+        //copy the default images there as a placeholder
+      }
 
       if ($this->is_refresh_request()) {
         $this->ImageQueue->refresh_url($url);
@@ -49,6 +54,16 @@ class Image extends Base_Controller{
       
       if (file_exists($filename)){ 
         $image_path = $filename;
+      }
+      else
+      {
+        copy($this->default_directory."/".$this->full_size['default'],$this->image_directory."/". md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['275_175'],$this->image_directory."/"."thumb_275_175_".md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['275_165'],$this->image_directory."/"."thumb_275_165_".md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['50_50'],$this->image_directory."/"."thumb_50_50_".md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['200_200'],$this->image_directory."/"."thumb_200_200_".md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['508_345'],$this->image_directory."/"."thumb_508_345_".md5($url).".jpg");
+        copy($this->default_directory."/".$this->sizes['268_182'],$this->image_directory."/"."thumb_268_182_".md5($url).".jpg");
       }
       $this->return_image($image_path);
     }

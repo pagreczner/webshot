@@ -973,7 +973,6 @@ class CI_Loader {
 		{
 			include_once(APPPATH.'config/autoload'.EXT);
 		}
-		
 
 		if ( ! isset($autoload))
 		{
@@ -988,7 +987,6 @@ class CI_Loader {
 				$this->add_package_path($package_path);
 			}
 		}
-
 		// Load any custom config file
 		if (count($autoload['config']) > 0)
 		{
@@ -1014,7 +1012,6 @@ class CI_Loader {
 		{
 			$autoload['libraries'] = $autoload['core'];
 		}
-
 		// Load libraries
 		if (isset($autoload['libraries']) AND count($autoload['libraries']) > 0)
 		{
@@ -1024,14 +1021,12 @@ class CI_Loader {
 				$this->database();
 				$autoload['libraries'] = array_diff($autoload['libraries'], array('database'));
 			}
-
 			// Load all other libraries
 			foreach ($autoload['libraries'] as $item)
 			{
 				$this->library($item);
 			}
 		}
-
 		// Autoload models
 		if (isset($autoload['model']))
 		{

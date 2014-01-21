@@ -1,0 +1,1 @@
+s3fs isocket-screenshots -o default_acl=public-read-write -o allow_other /mnt/s3

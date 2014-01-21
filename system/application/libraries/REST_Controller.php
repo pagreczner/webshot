@@ -27,7 +27,6 @@ class REST_Controller extends CI_Controller {
     function REST_Controller()
     {
         parent::__construct();
-        
 	    // How is this request being made? POST, DELETE, GET, PUT?
 	    $this->_method = $this->_detect_method();
 	    

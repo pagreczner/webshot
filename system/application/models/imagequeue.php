@@ -30,7 +30,10 @@ class Imagequeue extends CI_Model{
         if ( $query->num_rows == 0) {
             $data = array('url' => $url);
             $this->db->insert('image_queue', $data);
+            return true;
         }
+        
+        return false;
     }
 
     public function refresh_url($url) {

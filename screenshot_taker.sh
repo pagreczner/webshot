@@ -1,6 +1,6 @@
 #!/bin/bash
 
-api_server="http://127.0.0.1/api" 
+api_server="http://screenshot.isocket.com/api" 
 path="/tmp"
 
 ##clean everything
@@ -31,27 +31,20 @@ base_url=$url
 ##if there is something to get
 if [ "$base_url" != "" ]; then
 
-  ##fixing lack of http
-  if [[ $base_url != http* ]]; then
-     base_url="http://"$base_url
-  fi
-
   echo '* getting '$base_url
 
-  ##get the screenshot 
+  #clean firefox
   killall -9 firefox
-  killall -17 Xvfb
-  rm -rf /tmp/.X5-lock
   rm -rf /root/.mozilla/firefox/*
   
   echo '** clean'
 
-  Xvfb :5 -screen 0 1024x768x24 &
+  #call it again passing the url
   DISPLAY=:5.0 firefox -no-remote -width 900 -height 768 $base_url &
 
-  echo '*** created X'
+  echo '*** opening page '
 
-  sleep 15
+  sleep 45
   DISPLAY=:5.0 import -window root $path/temp.png
   
   if [ -f $path/temp.png ]
@@ -65,7 +58,7 @@ if [ "$base_url" != "" ]; then
     if [ $file_size -gt 10000 ]; then
 
       ##crop the top
-      mogrify -crop 885x572+0+157 $path/temp.png
+      mogrify -crop 885x572+0+115 $path/temp.png
 
       echo '***** cropped'
 
@@ -108,9 +101,5 @@ if [ "$base_url" != "" ]; then
     fi
   fi
 fi
-
-killall -9 firefox >> /dev/null
-killall -17 Xvfb >> /dev/null
-rm -rf /tmp/.X5-lock 
 
 echo '******* end'

@@ -249,7 +249,6 @@
 
 	// Set a mark point for benchmarking
 	$BM->mark('loading_time:_base_classes_end');
-
 /*
  * ------------------------------------------------------
  *  Security check
@@ -284,7 +283,6 @@
  */
 	// Mark a start point so we can benchmark the controller
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
-
 	$CI = new $class();
 
 /*
@@ -299,6 +297,7 @@
  *  Call the requested method
  * ------------------------------------------------------
  */
+
 	// Is there a "remap" function? If so, we call it instead
 	if (method_exists($CI, '_remap'))
 	{

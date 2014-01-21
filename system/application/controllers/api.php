@@ -38,7 +38,6 @@ class Api extends REST_Controller {
     }     
     
 	function next_simple_url_get(){
-
         $url = $this->ImageQueue->get_next_pending_url();        
         $this->output->set_status_header(200);
         $this->output->set_output( $url );        
